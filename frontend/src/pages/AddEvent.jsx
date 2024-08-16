@@ -61,13 +61,17 @@ export const AddEvent = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="grid grid-cols-2">
-        <div className="flex flex-col justify-end pr-80">
+        <div className="flex flex-col justify-end pl-52">
           <div className="text-6xl font-bold text-blue-900 py-5">Evently</div>
           <div className="text-2xl font-medium text-gray-600">
             Effortless Meeting Scheduling
           </div>
+          <div className="text-xl text-gray-500 py-4">
+            Streamline your meetings with automatic scheduling, Google Calendar
+            integration, and instant invites.
+          </div>
         </div>
-        <div className="">
+        <div className="pr-48">
           <InputBox
             onChange={(e) => {
               setSummary(e.target.value);
