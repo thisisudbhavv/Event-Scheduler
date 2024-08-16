@@ -2,10 +2,13 @@ const express = require("express");
 const { google } = require("googleapis");
 const dotenv = require("dotenv");
 const { v4: uuidv4 } = require("uuid");
+const cors = require("cors");
 
 dotenv.config();
 
 const app = express();
+app.use(express.json());
+app.use(cors());
 const scopes = ["https://www.googleapis.com/auth/calendar"];
 
 const oauth2Client = new google.auth.OAuth2(
@@ -19,28 +22,6 @@ const calendar = google.calendar({
   auth: oauth2Client,
 });
 
-const event = {
-  summary: "Tech talk",
-  location: "Meet",
-
-  description: "Demo event",
-  start: {
-    dateTime: "2024-08-20T13:30:00+05:30",
-    timeZone: "Asia/Kolkata",
-  },
-  end: {
-    dateTime: "2024-08-20T14:30:00+05:30",
-    timeZone: "Asia/Kolkata",
-  },
-  colorId: 1,
-  conferenceData: {
-    createRequest: {
-      requestId: uuidv4(),
-    },
-  },
-  attendees: [{ email: "thisisudbhavv@gmail.com" }],
-};
-
 const port = process.env.PORT || 8000;
 
 app.get("/auth", (req, res) => {
@@ -53,12 +34,42 @@ app.get("/auth", (req, res) => {
 });
 
 app.get("/auth/redirect", async (req, res) => {
-  const { tokens } = await oauth2Client.getToken(req.query.code);
-  oauth2Client.setCredentials(tokens);
-  res.send("Authentication Successful!");
+  try {
+    const { tokens } = await oauth2Client.getToken(req.query.code);
+    oauth2Client.setCredentials(tokens);
+
+    res.redirect(`${process.env.FRONTEND_URL}/addevent?auth=success`);
+  } catch (error) {
+    console.log("Error during OAuth redirect:", error);
+    res.status(500).send("Authentication Failed!");
+  }
 });
 
-app.get("/create-event", async (req, res) => {
+app.post("/create-event", async (req, res) => {
+  const data = req.body;
+
+  const event = {
+    summary: data.summary,
+    location: data.location,
+
+    description: data.description,
+    start: {
+      dateTime: data.start.dateTime,
+      timeZone: data.start.timeZone,
+    },
+    end: {
+      dateTime: data.end.dateTime,
+      timeZone: data.end.timeZone,
+    },
+    colorId: data.colorId,
+    conferenceData: {
+      createRequest: {
+        requestId: uuidv4(),
+      },
+    },
+    attendees: data.attendees,
+  };
+
   try {
     const result = await calendar.events.insert({
       calendarId: "primary",

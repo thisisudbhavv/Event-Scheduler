@@ -1,10 +1,13 @@
-export function Button({ label }) {
+export function Button({ label, onClick }) {
   return (
-    <button
-      type="button"
-      class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-100 "
-    >
-      {label}
-    </button>
+    <div className="flex m-2">
+      <button
+        onClick={onClick}
+        type="button"
+        class="w-full py-2.5 text-sm font-medium text-gray-100 focus:outline-none bg-blue-500 rounded-lg border border-blue-700 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-300 "
+      >
+        {label}
+      </button>
+    </div>
   );
 }
