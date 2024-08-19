@@ -4,7 +4,7 @@ export function Google() {
   return (
     <button
       onClick={() => {
-        window.location.href = "http://localhost:3000/auth";
+        window.location.href = "https://event-scheduler-api.onrender.com/auth";
       }}
       type="button"
       class="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-2 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2"

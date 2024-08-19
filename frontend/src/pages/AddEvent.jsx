@@ -48,7 +48,7 @@ export const AddEvent = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:3000/create-event",
+        "https://event-scheduler-api.onrender.com/create-event",
         eventDetails
       );
       alert(`Event Created! Join link: ${response.data.link}`);
